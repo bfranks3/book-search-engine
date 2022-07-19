@@ -8,7 +8,7 @@
     "watch": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "bfranks3",
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "^2.15.0",
