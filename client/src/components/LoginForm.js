@@ -30,22 +30,18 @@ const LoginForm = () => {
     event.preventDefault();
 
     // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
+      const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     }
 
     try {
-      const response = await loginUser(userFormData);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
+      const { data } = await login({
+        variables: { ...userFormData }
+      });
+      
+      Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
@@ -61,9 +57,9 @@ const LoginForm = () => {
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
-        <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
+        {error && <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
-        </Alert>
+        </Alert>}
         <Form.Group>
           <Form.Label htmlFor='email'>Email</Form.Label>
           <Form.Control
